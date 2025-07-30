@@ -1,5 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtService as NestJwtService } from '@nestjs/jwt'
+import { JwtService as NestJwtService } from '@nestjs/jwt';
 
 import { TokenPairDto } from 'src/shared/dto/token-pair.dto';
 import { JwtPayload } from 'src/shared/shared/jwt-payload.type';
@@ -9,23 +9,27 @@ export class JwtService {
   constructor(private readonly nestJwtService: NestJwtService) {}
 
   public generateAT(payload: JwtPayload): string {
-    return this.nestJwtService.sign({
-      sub: payload.sub,
-      email: payload.email,
-    },
-    {
-      expiresIn: '1h',
-    });
+    return this.nestJwtService.sign(
+      {
+        sub: payload.sub,
+        email: payload.email,
+      },
+      {
+        expiresIn: '1h',
+      },
+    );
   }
 
   public generateRT(payload: JwtPayload): string {
-    return this.nestJwtService.sign({
-      sub: payload.sub,
-      email: payload.email,
-    },
-    {
-      expiresIn: '30d',
-    });
+    return this.nestJwtService.sign(
+      {
+        sub: payload.sub,
+        email: payload.email,
+      },
+      {
+        expiresIn: '30d',
+      },
+    );
   }
 
   public verify(token: string): JwtPayload {
@@ -33,7 +37,7 @@ export class JwtService {
   }
 
   public decode(token: string): JwtPayload | null {
-    return this.nestJwtService.decode(token)
+    return this.nestJwtService.decode(token);
   }
 
   public refreshTokens(refreshToken: string): TokenPairDto {
@@ -41,7 +45,7 @@ export class JwtService {
 
     try {
       payload = this.verify(refreshToken);
-    } catch (err) {
+    } catch {
       throw new UnauthorizedException('Invalid refresh token');
     }
 

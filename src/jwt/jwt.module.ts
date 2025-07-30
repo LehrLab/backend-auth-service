@@ -4,6 +4,6 @@ import { JwtModule as NestJwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [NestJwtModule.register({ secret: '123123' })],
-  providers: [JwtService]
+  providers: [JwtService],
 })
 export class JwtModule {}
