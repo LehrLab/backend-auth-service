@@ -1,5 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './user.entity';
+import { ConfirmCodeActions } from '../types/confirm-code-actions.type';
 
 @Entity()
 export class ConfirmationCode {
@@ -10,10 +11,16 @@ export class ConfirmationCode {
   code: string; // 6 digits
 
   @Column()
-  type: 'email' | 'password_reset';
+  type: ConfirmCodeActions;
 
   @Column()
   userId: string;
+
+  @Column({ default: false })
+  used: boolean;
+
+  @Column({ type: 'datetime', nullable: true })
+  expiresAt?: Date;
 
   @ManyToOne(() => User, (user) => user.codes, { onDelete: 'CASCADE' })
   user: User;
